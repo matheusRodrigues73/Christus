@@ -1,0 +1,11 @@
+{
+  "name": "christus",
+  "version": "1.0.0",
+  "description": "Plataform to unify the body of Christus",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "matheusRodrigues73",
+  "license": "MIT"
+}
