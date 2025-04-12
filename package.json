@@ -4,7 +4,7 @@
   "description": "Plataform to unify the body of Christus",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "next dev"
   },
   "author": "matheusRodrigues73",
   "license": "MIT",
