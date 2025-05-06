@@ -514,7 +514,6 @@ export default function Home() {
           </div>
         </section>
       </main>
-      <footer className="bg-blue-900 text-white p-2"></footer>
     </>
   );
 }
