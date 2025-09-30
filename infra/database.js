@@ -7,6 +7,7 @@ async function query(objectQuery) {
     database: process.env.POSTGRES_DB,
     password: process.env.POSTGRES_PASSWORD,
     port: process.env.POSTGRES_PORT,
+    ssl: process.env.NODE_ENV === "development" ? false : process.env.SSL_KEY,
   });
   console.log({
     host: process.env.POSTGRES_HOST,
