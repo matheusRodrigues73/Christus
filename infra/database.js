@@ -7,14 +7,7 @@ async function query(objectQuery) {
     database: process.env.POSTGRES_DB,
     password: process.env.POSTGRES_PASSWORD,
     port: process.env.POSTGRES_PORT,
-    ssl: process.env.POSTGRES_CA ? { ca: process.env.POSTGRES_CA } : false,
-  });
-  console.log({
-    host: process.env.POSTGRES_HOST,
-    user: process.env.POSTGRES_USER,
-    database: process.env.POSTGRES_DB,
-    password: process.env.POSTGRES_PASSWORD,
-    port: process.env.POSTGRES_PORT,
+    ssl: getSslKey(),
   });
 
   try {
@@ -32,3 +25,10 @@ async function query(objectQuery) {
 export default {
   query: query,
 };
+
+function getSslKey() {
+  if (process.env.POSTGRES_CA) {
+    return { ca: process.env.POSTGRES_CA };
+  }
+  return process.env.NODE_ENV === "development" ? false : true;
+}
