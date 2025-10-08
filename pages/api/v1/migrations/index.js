@@ -16,7 +16,6 @@ export default async function migrations(request, response) {
       const pendingMigrations = await migrationsRunner({
         ...defaultMigrationsConfig,
       });
-      await dbClient.end();
 
       response.status(200).json(pendingMigrations);
     }
@@ -26,7 +25,6 @@ export default async function migrations(request, response) {
         ...defaultMigrationsConfig,
         dryRun: false,
       });
-      await dbClient.end();
 
       if (migratedMigrations.length > 0) {
         return response.status(201).json(migratedMigrations);
@@ -38,6 +36,6 @@ export default async function migrations(request, response) {
     console.log(error);
     throw error;
   } finally {
-    dbClient.end();
+    await dbClient.end();
   }
 }
