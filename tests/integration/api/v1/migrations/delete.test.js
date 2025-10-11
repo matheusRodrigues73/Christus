@@ -1,3 +1,11 @@
+import waitForAllServices from "tests/orchestrator.js";
+import database from "infra/database.js";
+
+beforeAll(async () => {
+  await waitForAllServices();
+  await database.query("DROP SCHEMA public CASCADE; CREATE SCHEMA public;");
+});
+
 test('DELETE to "api/v1/migrations" should return 405', async () => {
   const methodNotAllowed = await fetch(
     "http://localhost:3000/api/v1/migrations",

@@ -1,10 +1,10 @@
+import waitForAllServices from "tests/orchestrator.js";
 import database from "infra/database.js";
 
-beforeAll(cleanDatabase);
-
-async function cleanDatabase() {
+beforeAll(async () => {
+  await waitForAllServices();
   await database.query("DROP SCHEMA public CASCADE; CREATE SCHEMA public;");
-}
+});
 
 test('POST to "api/v1/migrations" should return 200', async () => {
   const migratedMigrations = await fetch(
