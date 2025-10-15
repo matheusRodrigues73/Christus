@@ -6,7 +6,7 @@ let balls = ["⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏
 
 function ballLoading() {
   loadInterval = setInterval(() => {
-    frame = balls[index++ % balls.length];
+    let frame = balls[index++ % balls.length];
     process.stdout.write(
       `\r\x1b[33m${frame}\x1b[0m Aguardando conexão com Postgres...`,
     );
