@@ -27,8 +27,6 @@ async function getNewClient() {
   return client;
 }
 
-let testeDeSegurança = "ghp_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
-
 const database = {
   query,
   getNewClient,
