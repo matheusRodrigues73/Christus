@@ -24,7 +24,7 @@ function checkPostgresConnection() {
   exec(
     "docker exec infra-database-1 pg_isready --host localhost",
     (error, stdout) => {
-      if (stdout.search("ccepting connections") === -1) {
+      if (stdout.search("accepting connections") === -1) {
         checkPostgresConnection();
         return;
       }
