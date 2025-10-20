@@ -1,7 +1,8 @@
-import waitForAllServices from "tests/orchestrator.js";
+import orchestrator from "tests/orchestrator.js";
 
 beforeAll(async () => {
-  await waitForAllServices();
+  await orchestrator.waitForAllServices();
+  await orchestrator.clearDatabase();
 });
 
 describe("GET api/v1/status", () => {
