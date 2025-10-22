@@ -7,10 +7,11 @@ async function query(objectQuery) {
     const res = await client.query(objectQuery);
     return res;
   } catch (error) {
+    console.log("Erro no modulo database:");
     console.error(error);
     throw error;
   } finally {
-    await client.end();
+    await client?.end();
   }
 }
 
