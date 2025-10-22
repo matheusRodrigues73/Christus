@@ -5,19 +5,16 @@ beforeAll(async () => {
   await orchestrator.clearDatabase();
 });
 
-describe("DELETE api/v1/migrations", () => {
+describe("POST api/v1/status", () => {
   describe("Anonymous User", () => {
-    test("Request a not allowed method", async () => {
-      const methodNotAllowed = await fetch(
-        "http://localhost:3000/api/v1/migrations",
-        {
-          method: "DELETE",
-        },
-      );
-      expect(methodNotAllowed.status).toBe(405);
+    test("Retriving current system status", async () => {
+      const response = await fetch("http:localhost:3000/api/v1/status", {
+        method: "POST",
+      });
+      expect(response.status).toBe(405);
 
-      const methodNotAllowedBody = await methodNotAllowed.json();
-      expect(methodNotAllowedBody).toEqual({
+      const responseBody = await response.json();
+      expect(responseBody).toEqual({
         name: "NotAllowedMethodError",
         message: "O método é invalido nesse endpoint",
         action: "Verifique os métodos que o endpoint suporta",
