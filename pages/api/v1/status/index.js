@@ -13,7 +13,7 @@ export default router.handler({
 
 function onNoMatchHandler(request, response) {
   const publicErrorObject = new NotAllowedMethodError();
-  response.status(405).json(publicErrorObject);
+  response.status(publicErrorObject.statusCode).json(publicErrorObject);
 }
 
 function onErrorHandler(error, request, response) {
