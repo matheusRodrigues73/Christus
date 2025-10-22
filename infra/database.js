@@ -1,4 +1,5 @@
 import { Client } from "pg";
+import { ServerError } from "./errors";
 
 async function query(objectQuery) {
   let client;
@@ -7,9 +8,10 @@ async function query(objectQuery) {
     const res = await client.query(objectQuery);
     return res;
   } catch (error) {
-    console.log("Erro no modulo database:");
-    console.error(error);
-    throw error;
+    const serverError = new ServerError(
+      "Erro na conexão com Banco ou na Query",
+    );
+    throw serverError;
   } finally {
     await client?.end();
   }
