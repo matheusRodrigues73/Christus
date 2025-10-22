@@ -17,7 +17,12 @@ describe("DELETE api/v1/migrations", () => {
       expect(methodNotAllowed.status).toBe(405);
 
       const methodNotAllowedBody = await methodNotAllowed.json();
-      expect(methodNotAllowedBody.error).toBe("Method Not Allowed");
+      expect(methodNotAllowedBody).toEqual({
+        name: "NotAllowedMethodError",
+        message: "O método é invalido nesse endpoint",
+        action: "Verifique os métodos que o endpoint suporta",
+        status_code: 405,
+      });
     });
   });
 });
