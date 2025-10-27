@@ -23,7 +23,6 @@ async function listPendingMigrations() {
     });
     return pendingMigrations;
   } finally {
-    console.log("testando Get");
     dbClient?.end();
   }
 }
@@ -45,7 +44,6 @@ async function runPendingMigrations() {
     });
     return migratedMigrations;
   } finally {
-    console.log("testando POST");
     dbClient?.end();
   }
 }
