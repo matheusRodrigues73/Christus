@@ -79,7 +79,7 @@ describe("GET api/v1/migrations", () => {
       expect(Date.parse(response2Body.updated_at)).not.toBeNaN();
     });
 
-    test("With nonexistent uername", async () => {
+    test("With nonexistent username", async () => {
       const response = await fetch(
         "http://localhost:3000/api/v1/users/nonexistent",
       );

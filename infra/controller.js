@@ -1,5 +1,5 @@
 import {
-  BadRequestError,
+  ValidationError,
   InternalServerError,
   NotAllowedMethodError,
   NotFoundError,
@@ -11,7 +11,7 @@ function onNoMatchHandler(request, response) {
 }
 
 function onErrorHandler(error, request, response) {
-  if (error instanceof BadRequestError || error instanceof NotFoundError) {
+  if (error instanceof ValidationError || error instanceof NotFoundError) {
     return response.status(error.statusCode).json(error);
   }
 

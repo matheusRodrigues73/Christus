@@ -68,7 +68,7 @@ describe("POST api/v1/migrations", () => {
       const response2Body = await response2.json();
 
       expect(response2Body).toEqual({
-        name: "BadRequestError",
+        name: "ValidationError",
         message: "O Email enviado já está registrado",
         action: "Utilize outro Email para completar o cadastro",
         status_code: 400,
@@ -104,7 +104,7 @@ describe("POST api/v1/migrations", () => {
 
       const response2Body = await response2.json();
       expect(response2Body).toEqual({
-        name: "BadRequestError",
+        name: "ValidationError",
         message: "O Username enviado já está registrado",
         action: "Utilize outro Username para realizar o cadastro",
         status_code: 400,

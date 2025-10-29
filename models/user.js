@@ -1,5 +1,5 @@
 import database from "infra/database";
-import { BadRequestError, NotFoundError } from "infra/errors";
+import { ValidationError, NotFoundError } from "infra/errors";
 
 async function findOneByUsername(username) {
   const userFound = runSelectQuery(username);
@@ -51,7 +51,7 @@ async function create(userInputValues) {
       values: [username],
     });
     if (duplicatedUsername.rows.length > 0) {
-      throw new BadRequestError({
+      throw new ValidationError({
         message: "O Username enviado já está registrado",
         action: "Utilize outro Username para realizar o cadastro",
       });
@@ -72,7 +72,7 @@ async function create(userInputValues) {
     });
 
     if (duplicatedEmail.rows.length > 0) {
-      throw new BadRequestError({
+      throw new ValidationError({
         message: "O Email enviado já está registrado",
         action: "Utilize outro Email para completar o cadastro",
       });
