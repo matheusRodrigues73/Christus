@@ -34,7 +34,7 @@ describe("GET api/v1/migrations", () => {
         id: response2Body.id,
         username: "SameCase",
         email: "same.case@email.com",
-        password: "acb132",
+        password: response2Body.password,
         created_at: response2Body.created_at,
         updated_at: response2Body.updated_at,
       });
@@ -69,7 +69,7 @@ describe("GET api/v1/migrations", () => {
         id: response2Body.id,
         username: "DifferentCase",
         email: "different.case@email.com",
-        password: "acb132",
+        password: response2Body.password,
         created_at: response2Body.created_at,
         updated_at: response2Body.updated_at,
       });
