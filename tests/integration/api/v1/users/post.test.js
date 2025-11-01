@@ -86,7 +86,7 @@ describe("POST api/v1/migrations", () => {
       expect(response2Body).toEqual({
         name: "ValidationError",
         message: "O Email enviado já está registrado",
-        action: "Utilize outro Email para completar o cadastro",
+        action: "Utilize outro Email para realizar esta operação",
         status_code: 400,
       });
     });
@@ -122,7 +122,7 @@ describe("POST api/v1/migrations", () => {
       expect(response2Body).toEqual({
         name: "ValidationError",
         message: "O Username enviado já está registrado",
-        action: "Utilize outro Username para realizar o cadastro",
+        action: "Utilize outro Username para realizar esta operação",
         status_code: 400,
       });
     });
