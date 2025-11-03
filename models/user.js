@@ -3,7 +3,8 @@ import password from "models/password.js";
 import { ValidationError, NotFoundError } from "infra/errors.js";
 
 async function findOneByUsername(username) {
-  const userFound = runSelectQuery(username);
+  const userFound = await runSelectQuery(username);
+  convertDateToStringInObject(userFound);
   return userFound;
 
   async function runSelectQuery(username) {
@@ -36,7 +37,9 @@ async function create(userInputValues) {
   await validateUniqueUsername(userInputValues.username);
   await validateUniqueEmail(userInputValues.email);
   await hashPasswordInObject(userInputValues);
-  return await insertNewUser(userInputValues);
+  const createdUser = await insertNewUser(userInputValues);
+  convertDateToStringInObject(createdUser);
+  return createdUser;
 
   async function insertNewUser(userInputValues) {
     const queryResponse = await database.query({
@@ -74,7 +77,7 @@ async function update(username, updateObject) {
   }
 
   const userWithNewValue = { ...currentUser, ...updateObject };
-  const updeatedUser = await database.query({
+  const updatedUser = await database.query({
     text: `
     UPDATE
       users
@@ -96,7 +99,7 @@ async function update(username, updateObject) {
       userWithNewValue.password,
     ],
   });
-  return updeatedUser.rows[0];
+  return updatedUser.rows[0];
 }
 
 async function validateUniqueUsername(username) {
@@ -144,6 +147,11 @@ async function validateUniqueEmail(email) {
 async function hashPasswordInObject(userInputValues) {
   const hashedPassword = await password.hash(userInputValues.password);
   userInputValues.password = hashedPassword;
+}
+
+function convertDateToStringInObject(userObject) {
+  userObject.created_at = new Date(userObject.created_at).toISOString();
+  userObject.updated_at = new Date(userObject.updated_at).toISOString();
 }
 
 const user = {
