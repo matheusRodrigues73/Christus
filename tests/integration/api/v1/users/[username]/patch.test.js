@@ -169,7 +169,7 @@ describe("PATCH api/v1/users/[username]", () => {
             "content-type": "application/json",
           },
           body: JSON.stringify({
-            password: "dfe465",
+            password: "newPassword",
           }),
         },
       );
@@ -186,13 +186,13 @@ describe("PATCH api/v1/users/[username]", () => {
       expect(Date.parse(responseBody.updated_at)).not.toBeNaN();
 
       const correctPassword = await password.compare(
-        "dfe465",
+        "newPassword",
         updatedUser.password,
       );
       expect(correctPassword).toBe(true);
 
       const incorrectPassword = await password.compare(
-        "acb132",
+        createdUser.password,
         updatedUser.password,
       );
       expect(incorrectPassword).toBe(false);
