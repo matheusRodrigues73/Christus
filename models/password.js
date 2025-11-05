@@ -1,7 +1,14 @@
 import bcrypt from "bcryptjs";
+import { ValidationError } from "infra/errors";
 
 async function hash(password) {
   const rounds = getNumberOfRounds();
+  if (!password) {
+    throw new ValidationError({
+      message: "A senha não pode estar indefinida!",
+      action: "Digite alguma senha para realizar a operação",
+    });
+  }
   return await bcrypt.hash(`${password + process.env.PEPER_TO_HASH}`, rounds);
 }
 

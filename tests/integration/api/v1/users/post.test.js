@@ -126,5 +126,29 @@ describe("POST api/v1/migrations", () => {
         status_code: 400,
       });
     });
+
+    test("With Undefined Password", async () => {
+      const response = await fetch("http://localhost:3000/api/v1/users", {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify({
+          username: "undefinedPassword",
+          email: "undefinedpassword@gmail.com",
+        }),
+      });
+
+      expect(response.status).toBe(400);
+
+      const responseBody = await response.json();
+
+      expect(responseBody).toEqual({
+        name: "ValidationError",
+        message: "A senha não pode estar indefinida!",
+        action: "Digite alguma senha para realizar a operação",
+        status_code: 400,
+      });
+    });
   });
 });
