@@ -26,7 +26,7 @@ describe("PATCH api/v1/users/[username]", () => {
 
       expect(responseBody).toEqual({
         name: "NotFoundError",
-        message: "Este usuário não foi encontrado no sistema!",
+        message: "Este username não foi encontrado no sistema!",
         action: "Verifique se o username foi digitado corretamente",
         status_code: 404,
       });
@@ -88,7 +88,6 @@ describe("PATCH api/v1/users/[username]", () => {
       expect(response.status).toBe(400);
 
       const responseBody = await response.json();
-
       expect(responseBody).toEqual({
         name: "ValidationError",
         message: "O Email enviado já está registrado",

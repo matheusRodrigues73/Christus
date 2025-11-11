@@ -9,7 +9,7 @@ route.post(postHandler);
 export default route.handler(controller.errorHandlers);
 
 async function postHandler(request, response) {
-  const inputValues = request.body;
-  const createdUser = await user.create(inputValues);
+  const userInputValues = request.body;
+  const createdUser = await user.create(userInputValues);
   response.status(201).json(createdUser);
 }
