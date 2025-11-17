@@ -2,9 +2,38 @@ import database from "infra/database.js";
 import password from "models/password.js";
 import { ValidationError, NotFoundError } from "infra/errors.js";
 
+async function findOneById(id) {
+  const userFound = await runSelectQuery(id);
+  return userFound;
+
+  async function runSelectQuery(id) {
+    const userFound = await database.query({
+      text: `
+        SELECT
+          *
+        FROM
+          users
+        WHERE
+          id = $1
+        LIMIT
+          1
+        ;
+      `,
+      values: [id],
+    });
+    if (userFound.rowCount === 0) {
+      throw new NotFoundError({
+        message: "Este id não foi encontrado no sistema!",
+        action: "Verifique se o id foi digitado corretamente",
+      });
+    }
+
+    return userFound.rows[0];
+  }
+}
+
 async function findOneByUsername(username) {
   const userFound = await runSelectQuery(username);
-  convertDateToStringInObject(userFound);
   return userFound;
 
   async function runSelectQuery(username) {
@@ -35,7 +64,6 @@ async function findOneByUsername(username) {
 
 async function findOneByEmail(email) {
   const userFound = await runSelectQuery(email);
-  convertDateToStringInObject(userFound);
   return userFound;
 
   async function runSelectQuery(email) {
@@ -69,7 +97,6 @@ async function create(userInputValues) {
   await validateUniqueEmail(userInputValues.email);
   await hashPasswordInObject(userInputValues);
   const createdUser = await insertNewUser(userInputValues);
-  convertDateToStringInObject(createdUser);
   return createdUser;
 
   async function insertNewUser(userInputValues) {
@@ -180,13 +207,9 @@ async function hashPasswordInObject(userInputValues) {
   userInputValues.password = hashedPassword;
 }
 
-function convertDateToStringInObject(userObject) {
-  userObject.created_at = new Date(userObject.created_at).toISOString();
-  userObject.updated_at = new Date(userObject.updated_at).toISOString();
-}
-
 const user = {
   create,
+  findOneById,
   findOneByUsername,
   findOneByEmail,
   update,

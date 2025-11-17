@@ -115,7 +115,12 @@ describe("PATCH api/v1/users/[username]", () => {
 
       const updatedUser = await orchestrator.getUserByUsername("uniqueUser");
       const responseBody = await response.json();
-      expect(responseBody).toEqual({ ...updatedUser, username: "uniqueUser" });
+      expect(responseBody).toEqual({
+        ...updatedUser,
+        username: "uniqueUser",
+        created_at: updatedUser.created_at.toISOString(),
+        updated_at: updatedUser.updated_at.toISOString(),
+      });
 
       expect(uuidVersion(responseBody.id)).toBe(4);
       expect(Date.parse(responseBody.created_at)).not.toBeNaN();
@@ -148,6 +153,8 @@ describe("PATCH api/v1/users/[username]", () => {
       expect(responseBody).toEqual({
         ...updatedUser,
         email: "uniqueEmail@gmail.com",
+        created_at: updatedUser.created_at.toISOString(),
+        updated_at: updatedUser.updated_at.toISOString(),
       });
 
       expect(uuidVersion(responseBody.id)).toBe(4);
@@ -178,7 +185,11 @@ describe("PATCH api/v1/users/[username]", () => {
         createdUser.username,
       );
       const responseBody = await response.json();
-      expect(responseBody).toEqual(updatedUser);
+      expect(responseBody).toEqual({
+        ...updatedUser,
+        created_at: updatedUser.created_at.toISOString(),
+        updated_at: updatedUser.updated_at.toISOString(),
+      });
 
       expect(uuidVersion(responseBody.id)).toBe(4);
       expect(Date.parse(responseBody.created_at)).not.toBeNaN();

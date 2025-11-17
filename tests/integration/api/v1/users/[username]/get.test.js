@@ -18,7 +18,11 @@ describe("GET api/v1/users", () => {
       expect(response.status).toBe(200);
 
       const responseBody = await response.json();
-      expect(responseBody).toEqual(createdUser);
+      expect(responseBody).toEqual({
+        ...createdUser,
+        created_at: createdUser.created_at.toISOString(),
+        updated_at: createdUser.updated_at.toISOString(),
+      });
 
       expect(uuidVersion(responseBody.id)).toBe(4);
       expect(Date.parse(responseBody.created_at)).not.toBeNaN();
@@ -34,7 +38,11 @@ describe("GET api/v1/users", () => {
       expect(response.status).toBe(200);
 
       const responseBody = await response.json();
-      expect(responseBody).toEqual(createdUser);
+      expect(responseBody).toEqual({
+        ...createdUser,
+        created_at: createdUser.created_at.toISOString(),
+        updated_at: createdUser.updated_at.toISOString(),
+      });
 
       expect(uuidVersion(responseBody.id)).toBe(4);
       expect(Date.parse(responseBody.created_at)).not.toBeNaN();
