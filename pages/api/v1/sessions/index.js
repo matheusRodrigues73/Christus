@@ -6,6 +6,7 @@ import { createRouter } from "next-connect";
 const router = createRouter();
 
 router.post(postHandler);
+router.delete(deleteHandler);
 
 export default router.handler(controller.errorHandlers);
 
@@ -20,4 +21,13 @@ async function postHandler(request, response) {
   controller.setCookie(newSession.token, response);
 
   response.status(201).json(newSession);
+}
+
+async function deleteHandler(request, response) {
+  const sessionToken = request.cookies.session_id;
+  const sessionObject = await session.findOneValidByToken(sessionToken);
+  const expiredSessionObject = await session.expireById(sessionObject.id);
+
+  controller.clearSessionCookie(response);
+  response.status(200).json(expiredSessionObject);
 }
