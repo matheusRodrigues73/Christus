@@ -116,8 +116,11 @@ describe("PATCH api/v1/users/[username]", () => {
       const updatedUser = await orchestrator.getUserByUsername("uniqueUser");
       const responseBody = await response.json();
       expect(responseBody).toEqual({
-        ...updatedUser,
+        id: updatedUser.id,
         username: "uniqueUser",
+        email: updatedUser.email,
+        password: updatedUser.password,
+        features: [],
         created_at: updatedUser.created_at.toISOString(),
         updated_at: updatedUser.updated_at.toISOString(),
       });
@@ -151,8 +154,11 @@ describe("PATCH api/v1/users/[username]", () => {
       );
       const responseBody = await response.json();
       expect(responseBody).toEqual({
-        ...updatedUser,
+        id: updatedUser.id,
+        username: updatedUser.username,
         email: "uniqueEmail@gmail.com",
+        password: updatedUser.password,
+        features: [],
         created_at: updatedUser.created_at.toISOString(),
         updated_at: updatedUser.updated_at.toISOString(),
       });
@@ -186,7 +192,11 @@ describe("PATCH api/v1/users/[username]", () => {
       );
       const responseBody = await response.json();
       expect(responseBody).toEqual({
-        ...updatedUser,
+        id: updatedUser.id,
+        username: updatedUser.username,
+        email: updatedUser.email,
+        password: updatedUser.password,
+        features: [],
         created_at: updatedUser.created_at.toISOString(),
         updated_at: updatedUser.updated_at.toISOString(),
       });

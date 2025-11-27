@@ -19,7 +19,11 @@ describe("GET api/v1/users", () => {
 
       const responseBody = await response.json();
       expect(responseBody).toEqual({
-        ...createdUser,
+        id: createdUser.id,
+        username: createdUser.username,
+        email: createdUser.email,
+        password: createdUser.password,
+        features: [],
         created_at: createdUser.created_at.toISOString(),
         updated_at: createdUser.updated_at.toISOString(),
       });
@@ -39,7 +43,11 @@ describe("GET api/v1/users", () => {
 
       const responseBody = await response.json();
       expect(responseBody).toEqual({
-        ...createdUser,
+        id: createdUser.id,
+        username: createdUser.username,
+        email: createdUser.email,
+        password: createdUser.password,
+        features: [],
         created_at: createdUser.created_at.toISOString(),
         updated_at: createdUser.updated_at.toISOString(),
       });
