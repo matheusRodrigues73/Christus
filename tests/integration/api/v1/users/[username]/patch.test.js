@@ -120,7 +120,7 @@ describe("PATCH api/v1/users/[username]", () => {
         username: "uniqueUser",
         email: updatedUser.email,
         password: updatedUser.password,
-        features: [],
+        features: ["read:activation_token"],
         created_at: updatedUser.created_at.toISOString(),
         updated_at: updatedUser.updated_at.toISOString(),
       });
@@ -158,7 +158,7 @@ describe("PATCH api/v1/users/[username]", () => {
         username: updatedUser.username,
         email: "uniqueEmail@gmail.com",
         password: updatedUser.password,
-        features: [],
+        features: ["read:activation_token"],
         created_at: updatedUser.created_at.toISOString(),
         updated_at: updatedUser.updated_at.toISOString(),
       });
@@ -196,7 +196,7 @@ describe("PATCH api/v1/users/[username]", () => {
         username: updatedUser.username,
         email: updatedUser.email,
         password: updatedUser.password,
-        features: [],
+        features: ["read:activation_token"],
         created_at: updatedUser.created_at.toISOString(),
         updated_at: updatedUser.updated_at.toISOString(),
       });
