@@ -11,6 +11,8 @@ const transporter = nodemailer.createTransport({
 });
 
 async function send(mailOpitions) {
+  if (!mailOpitions.from)
+    mailOpitions.from = "Glorificat <contato@glorificat.com.br>";
   await transporter.sendMail(mailOpitions);
 }
 
