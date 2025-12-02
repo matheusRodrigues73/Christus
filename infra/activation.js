@@ -1,6 +1,7 @@
 import email from "infra/email.js";
 import database from "infra/database.js";
 import webServer from "infra/webserver.js";
+import { NotFoundError } from "./errors";
 
 const EXPIRATION_IN_MILLISECONDS = 60 * 15 * 1000; // 15 min
 
@@ -59,6 +60,15 @@ async function findOneValidById(token) {
       ;`,
       values: [token],
     });
+
+    if (result.rowCount === 0) {
+      throw new NotFoundError({
+        message:
+          "O token de ativação utilizado não foi encontrado ou está invalido.",
+        action: "Faça um novo cadastro",
+      });
+    }
+
     return result.rows[0];
   }
 }
