@@ -84,6 +84,12 @@ async function getLastEmail() {
   return lastEmail;
 }
 
+function extractUUID(mailText) {
+  const regex = /[0-9a-fA-F-]{36}/;
+  const match = mailText.match(regex);
+  return match ? match[0] : null;
+}
+
 const orchestrator = {
   waitForAllServices,
   clearDatabase,
@@ -93,6 +99,7 @@ const orchestrator = {
   getUserByUsername,
   deleteAllEmails,
   getLastEmail,
+  extractUUID,
 };
 
 export default orchestrator;

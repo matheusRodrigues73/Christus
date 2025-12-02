@@ -39,11 +39,11 @@ async function create(userId) {
   }
 }
 
-async function findOneByUserId(userId) {
-  const newToken = await runSelectQuery(userId);
-  return newToken;
+async function findOneValidById(token) {
+  const activationToken = await runSelectQuery(token);
+  return activationToken;
 
-  async function runSelectQuery(userId) {
+  async function runSelectQuery(token) {
     const result = await database.query({
       text: `
       SELECT
@@ -51,11 +51,13 @@ async function findOneByUserId(userId) {
       FROM
         user_activation_tokens
       WHERE
-        user_id = $1
+        id = $1
+        AND used_at IS NULL
+        AND expires_at > NOW()
       LIMIT
         1
       ;`,
-      values: [userId],
+      values: [token],
     });
     return result.rows[0];
   }
@@ -64,7 +66,7 @@ async function findOneByUserId(userId) {
 const activation = {
   sendEmailToUser,
   create,
-  findOneByUserId,
+  findOneValidById,
 };
 
 export default activation;
