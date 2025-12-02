@@ -10,8 +10,8 @@ function getOrigin() {
   return "https://glorificat.com.br";
 }
 
-const webServer = {
+const webserver = {
   origin: getOrigin(),
 };
 
-export default webServer;
+export default webserver;
