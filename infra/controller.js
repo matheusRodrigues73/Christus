@@ -1,11 +1,14 @@
 import * as cookie from "cookie";
 import session from "models/session.js";
+import user from "models/user";
+import authorization from "models/authorization.js";
 import {
   ValidationError,
   InternalServerError,
   NotAllowedMethodError,
   NotFoundError,
   UnauthorizedError,
+  ForbiddenError,
 } from "infra/errors";
 
 function onNoMatchHandler(request, response) {
@@ -14,7 +17,11 @@ function onNoMatchHandler(request, response) {
 }
 
 function onErrorHandler(error, request, response) {
-  if (error instanceof ValidationError || error instanceof NotFoundError) {
+  if (
+    error instanceof ValidationError ||
+    error instanceof NotFoundError ||
+    error instanceof ForbiddenError
+  ) {
     return response.status(error.statusCode).json(error);
   }
   if (error instanceof UnauthorizedError) {
@@ -49,6 +56,51 @@ function clearSessionCookie(response) {
   response.setHeader("Set-Cookie", setCookie);
 }
 
+async function injectAnonymousOrUser(request, response, next) {
+  if (request.cookies?.session_id) {
+    await injectAuthenticatedUser(request);
+    return next();
+  }
+
+  injectAnonymousUser(request);
+  return next();
+
+  async function injectAuthenticatedUser(request) {
+    const sessionToken = request.cookies.session_id;
+    const sessionObject = await session.findOneValidByToken(sessionToken);
+    const userObject = await user.findOneById(sessionObject.user_id);
+
+    request.context = {
+      ...request.context,
+      user: userObject,
+    };
+  }
+  function injectAnonymousUser() {
+    const anonumousUserObject = {
+      features: ["read:activation_token", "create:session", "create:user"],
+    };
+    request.context = {
+      ...request.context,
+      user: anonumousUserObject,
+    };
+  }
+}
+
+function canRequest(feature) {
+  return function canRequestMiddleware(request, response, next) {
+    const userTryingToRequest = request.context.user;
+
+    if (authorization.can(userTryingToRequest, feature)) {
+      return next();
+    }
+
+    throw new ForbiddenError({
+      message: "Voce não possui permição para executar esta ação.",
+      action: "Verifique se o seu usuário possui a feature!",
+    });
+  };
+}
+
 const controller = {
   errorHandlers: {
     onNoMatch: onNoMatchHandler,
@@ -56,6 +108,8 @@ const controller = {
   },
   setCookie,
   clearSessionCookie,
+  injectAnonymousOrUser,
+  canRequest,
 };
 
 export default controller;

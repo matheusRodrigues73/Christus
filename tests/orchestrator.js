@@ -1,5 +1,6 @@
 import { faker } from "@faker-js/faker/.";
 import retry from "async-retry";
+import activation from "infra/activation";
 import database from "infra/database.js";
 import migrator from "models/migrator";
 import session from "models/session";
@@ -55,6 +56,10 @@ async function createUser(inputObject) {
   });
 }
 
+async function activateUser(user) {
+  return await activation.activateUserByUserId(user.id);
+}
+
 async function createSession(userId) {
   return await session.create(userId);
 }
@@ -72,6 +77,10 @@ async function getLastEmail() {
   const emailListBody = await emailListResponse.json();
   const lastEmail = emailListBody.pop();
 
+  if (!lastEmail) {
+    return null;
+  }
+
   const emailTextResponse = await fetch(
     `${emailHttpUrl}/messages/${lastEmail.id}.plain`,
   );
@@ -80,15 +89,23 @@ async function getLastEmail() {
   return lastEmail;
 }
 
+function extractUUID(mailText) {
+  const regex = /[0-9a-fA-F-]{36}/;
+  const match = mailText.match(regex);
+  return match ? match[0] : null;
+}
+
 const orchestrator = {
   waitForAllServices,
   clearDatabase,
   runPendingMigrations,
   createUser,
+  activateUser,
   createSession,
   getUserByUsername,
   deleteAllEmails,
   getLastEmail,
+  extractUUID,
 };
 
 export default orchestrator;
