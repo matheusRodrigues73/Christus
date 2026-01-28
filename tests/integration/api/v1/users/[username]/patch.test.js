@@ -137,6 +137,31 @@ describe("PATCH api/v1/users/[username]", () => {
       });
     });
 
+    test('With "user2" targeting "user1"', async () => {
+      const user1 = await orchestrator.createUser({ username: "user1" });
+      const activatedUser1 = await orchestrator.activateUser(user1);
+      await orchestrator.createSession(activatedUser1.id);
+      const user2 = await orchestrator.createUser({ username: "user2" });
+      const activatedUser2 = await orchestrator.activateUser(user2);
+      const sessionObject2 = await orchestrator.createSession(
+        activatedUser2.id,
+      );
+
+      const response = await fetch(
+        `http://localhost:3000/api/v1/users/${user1.username}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            Cookie: `session_id=${sessionObject2.token}`,
+          },
+          body: JSON.stringify({ username: "user3" }),
+        },
+      );
+
+      expect(response.status).toBe(403);
+    });
+
     test("With Unique Username", async () => {
       const createdUser = await orchestrator.createUser();
       const activatedUser = await orchestrator.activateUser(createdUser);
