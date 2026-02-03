@@ -60,8 +60,12 @@ async function activateUser(user) {
   return await activation.activateUserByUserId(user.id);
 }
 
-async function createSession(userId) {
-  return await session.create(userId);
+async function createSession(user) {
+  return await session.create(user.id);
+}
+
+async function addFeatures(providedUser, features) {
+  await user.addFeatures(providedUser.id, features);
 }
 
 async function getUserByUsername(username) {
@@ -102,6 +106,7 @@ const orchestrator = {
   createUser,
   activateUser,
   createSession,
+  addFeatures,
   getUserByUsername,
   deleteAllEmails,
   getLastEmail,

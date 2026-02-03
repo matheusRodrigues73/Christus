@@ -224,7 +224,31 @@ async function setFeatures(userId, features) {
       UPDATE
         users
       SET
-        features = $2
+        features = $2,
+        updated_at = timezone('utc', now())
+      WHERE
+        id = $1
+      RETURNING
+        *
+      ;`,
+      values: [userId, features],
+    });
+    return result.rows[0];
+  }
+}
+
+async function addFeatures(userId, features) {
+  const updatedUser = await runUpdateQuery(userId, features);
+  return updatedUser;
+
+  async function runUpdateQuery(userId, features) {
+    const result = await database.query({
+      text: `
+      UPDATE
+        users
+      SET
+        features = array_cat(features, $2),
+        updated_at = timezone('utc', now())
       WHERE
         id = $1
       RETURNING
@@ -243,6 +267,7 @@ const user = {
   findOneByEmail,
   update,
   setFeatures,
+  addFeatures,
 };
 
 export default user;
