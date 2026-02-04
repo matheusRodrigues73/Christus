@@ -16,15 +16,27 @@ function can(user, feature, resource) {
 }
 
 function filterOutput(user, feature, output) {
+  const defaultSecureOutput = {
+    id: output.id,
+    username: output.username,
+    features: output.features,
+    created_at: output.created_at,
+    updated_at: output.updated_at,
+  };
+  let secureOutputValues;
   if (feature === "read:user") {
-    return {
-      id: output.id,
-      username: output.username,
-      features: output.features,
-      created_at: output.created_at,
-      updated_at: output.updated_at,
-    };
+    secureOutputValues = defaultSecureOutput;
   }
+  if (feature === "read:user:updated" && can(user, feature)) {
+    secureOutputValues = { ...defaultSecureOutput, email: output.email };
+    if (user.id !== output.id && can(user, "update:user:others")) {
+      secureOutputValues = {
+        ...secureOutputValues,
+        updated_by: user.username,
+      };
+    }
+  }
+  return secureOutputValues ?? {};
 }
 
 const authorization = {

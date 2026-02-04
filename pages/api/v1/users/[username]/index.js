@@ -40,6 +40,11 @@ async function patchHandler(request, response) {
     });
   }
 
-  const userUpdated = await user.update(username, userInputValues);
-  response.status(200).json(userUpdated);
+  const updatedUser = await user.update(username, userInputValues);
+  const secureOutputValues = authorization.filterOutput(
+    userTryingToPatch,
+    "read:user:updated",
+    updatedUser,
+  );
+  response.status(200).json(secureOutputValues);
 }

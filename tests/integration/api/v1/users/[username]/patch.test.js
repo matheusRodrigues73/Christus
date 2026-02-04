@@ -182,8 +182,7 @@ describe("PATCH api/v1/users/[username]", () => {
         id: updatedUser.id,
         username: "uniqueUser",
         email: updatedUser.email,
-        password: updatedUser.password,
-        features: ["create:session", "read:session", "update:user"],
+        features: updatedUser.features,
         created_at: updatedUser.created_at.toISOString(),
         updated_at: updatedUser.updated_at.toISOString(),
       });
@@ -223,8 +222,7 @@ describe("PATCH api/v1/users/[username]", () => {
         id: updatedUser.id,
         username: updatedUser.username,
         email: "uniqueEmail@gmail.com",
-        password: updatedUser.password,
-        features: ["create:session", "read:session", "update:user"],
+        features: updatedUser.features,
         created_at: updatedUser.created_at.toISOString(),
         updated_at: updatedUser.updated_at.toISOString(),
       });
@@ -264,8 +262,7 @@ describe("PATCH api/v1/users/[username]", () => {
         id: updatedUser.id,
         username: updatedUser.username,
         email: updatedUser.email,
-        password: updatedUser.password,
-        features: ["create:session", "read:session", "update:user"],
+        features: updatedUser.features,
         created_at: updatedUser.created_at.toISOString(),
         updated_at: updatedUser.updated_at.toISOString(),
       });
@@ -319,14 +316,17 @@ describe("PATCH api/v1/users/[username]", () => {
 
       const responseBody = await response.json();
 
+      const updatedDefaultUser = await orchestrator.getUserByUsername(
+        "changedUserByPrivilegedUser",
+      );
       expect(responseBody).toEqual({
-        id: defaultUser.id,
+        id: updatedDefaultUser.id,
         username: "changedUserByPrivilegedUser",
-        password: defaultUser.password,
-        email: defaultUser.email,
-        features: defaultUser.features,
-        created_at: responseBody.created_at,
-        updated_at: responseBody.updated_at,
+        email: updatedDefaultUser.email,
+        features: updatedDefaultUser.features,
+        created_at: updatedDefaultUser.created_at.toISOString(),
+        updated_at: updatedDefaultUser.updated_at.toISOString(),
+        updated_by: privilegedUser.username,
       });
 
       expect(uuidVersion(responseBody.id)).toBe(4);
