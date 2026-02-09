@@ -56,8 +56,22 @@ function clearSessionCookie(response) {
   response.setHeader("Set-Cookie", setCookie);
 }
 
+function injectPrivilegedUser(request) {
+  const userObject = {
+    features: ["read:migrations", "run:migrations"],
+  };
+  request.context = {
+    ...request.context,
+    user: userObject,
+  };
+}
+
 async function injectAnonymousOrUser(request, response, next) {
   if (request.cookies?.session_id) {
+    if (request.cookies?.session_id === process.env.PRIVILEGED_KEY) {
+      injectPrivilegedUser(request);
+      return next();
+    }
     await injectAuthenticatedUser(request);
     return next();
   }

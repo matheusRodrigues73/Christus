@@ -7,32 +7,52 @@ beforeAll(async () => {
 
 describe("POST api/v1/migrations", () => {
   describe("Anonymous User", () => {
-    describe("Run pending migrations", () => {
-      test("Running at first time", async () => {
-        const migratedMigrations = await fetch(
-          "http://localhost:3000/api/v1/migrations",
-          {
-            method: "POST",
+    test("Run pending migrations", async () => {
+      const migratedMigrations = await fetch(
+        "http://localhost:3000/api/v1/migrations",
+        {
+          method: "POST",
+        },
+      );
+      expect(migratedMigrations.status).toBe(403);
+    });
+  });
+  describe("Privileged User", () => {
+    test("Running at first time", async () => {
+      const privilegedKey = process.env.PRIVILEGED_KEY;
+      const migratedMigrations = await fetch(
+        "http://localhost:3000/api/v1/migrations",
+        {
+          method: "POST",
+          headers: {
+            Cookie: `session_id=${privilegedKey}`,
           },
-        );
-        expect(migratedMigrations.status).toBe(201);
+        },
+      );
+      expect(migratedMigrations.status).toBe(201);
 
-        const migratedMigrationsBody = await migratedMigrations.json();
-        expect(Array.isArray(migratedMigrationsBody)).toBe(true);
-        expect(migratedMigrationsBody.length).toBeGreaterThan(0);
-      });
+      const migratedMigrationsBody = await migratedMigrations.json();
+      expect(Array.isArray(migratedMigrationsBody)).toBe(true);
+      expect(migratedMigrationsBody.length).toBeGreaterThan(0);
+    });
 
-      test("Running at second time", async () => {
-        const checkRolledMigrations = await fetch(
-          "http://localhost:3000/api/v1/migrations",
-          { method: "POST" },
-        );
-        expect(checkRolledMigrations.status).toBe(200);
+    test("Running at second time", async () => {
+      const privilegedKey = process.env.PRIVILEGED_KEY;
+      const checkRolledMigrations = await fetch(
+        "http://localhost:3000/api/v1/migrations",
+        {
+          method: "POST",
+          headers: {
+            Cookie: `session_id=${privilegedKey}`,
+          },
+        },
+      );
 
-        const checkRolledMigrationsBody = await checkRolledMigrations.json();
-        expect(Array.isArray(checkRolledMigrationsBody)).toBe(true);
-        expect(checkRolledMigrationsBody.length).toBe(0);
-      });
+      expect(checkRolledMigrations.status).toBe(200);
+
+      const checkRolledMigrationsBody = await checkRolledMigrations.json();
+      expect(Array.isArray(checkRolledMigrationsBody)).toBe(true);
+      expect(checkRolledMigrationsBody.length).toBe(0);
     });
   });
 });

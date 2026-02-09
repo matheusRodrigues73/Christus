@@ -181,8 +181,7 @@ describe("PATCH api/v1/users/[username]", () => {
       expect(responseBody).toEqual({
         id: updatedUser.id,
         username: "uniqueUser",
-        email: updatedUser.email,
-        features: updatedUser.features,
+        features: ["create:session", "read:session", "update:user"],
         created_at: updatedUser.created_at.toISOString(),
         updated_at: updatedUser.updated_at.toISOString(),
       });
@@ -221,8 +220,7 @@ describe("PATCH api/v1/users/[username]", () => {
       expect(responseBody).toEqual({
         id: updatedUser.id,
         username: updatedUser.username,
-        email: "uniqueEmail@gmail.com",
-        features: updatedUser.features,
+        features: ["create:session", "read:session", "update:user"],
         created_at: updatedUser.created_at.toISOString(),
         updated_at: updatedUser.updated_at.toISOString(),
       });
@@ -261,8 +259,7 @@ describe("PATCH api/v1/users/[username]", () => {
       expect(responseBody).toEqual({
         id: updatedUser.id,
         username: updatedUser.username,
-        email: updatedUser.email,
-        features: updatedUser.features,
+        features: ["create:session", "read:session", "update:user"],
         created_at: updatedUser.created_at.toISOString(),
         updated_at: updatedUser.updated_at.toISOString(),
       });
@@ -294,7 +291,7 @@ describe("PATCH api/v1/users/[username]", () => {
       const privilegedUserSessionObject =
         await orchestrator.createSession(privilegedUser);
 
-      orchestrator.addFeatures(privilegedUser, ["update:user:others"]);
+      await orchestrator.addFeatures(privilegedUser, ["update:user:others"]);
 
       const defaultUser = await orchestrator.createUser({
         username: "defaultUser",
@@ -322,11 +319,9 @@ describe("PATCH api/v1/users/[username]", () => {
       expect(responseBody).toEqual({
         id: updatedDefaultUser.id,
         username: "changedUserByPrivilegedUser",
-        email: updatedDefaultUser.email,
-        features: updatedDefaultUser.features,
+        features: ["read:activation_token"],
         created_at: updatedDefaultUser.created_at.toISOString(),
         updated_at: updatedDefaultUser.updated_at.toISOString(),
-        updated_by: privilegedUser.username,
       });
 
       expect(uuidVersion(responseBody.id)).toBe(4);

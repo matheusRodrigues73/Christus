@@ -65,7 +65,7 @@ async function createSession(user) {
 }
 
 async function addFeatures(providedUser, features) {
-  await user.addFeatures(providedUser.id, features);
+  return await user.addFeatures(providedUser.id, features);
 }
 
 async function getUserByUsername(username) {

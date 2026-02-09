@@ -2,19 +2,28 @@ import { createRouter } from "next-connect";
 import controller from "infra/controller.js";
 import user from "models/user.js";
 import activation from "infra/activation.js";
+import authorization from "models/authorization";
 
-const route = createRouter();
+const router = createRouter();
 
-route.post(postHandler);
+router.use(controller.injectAnonymousOrUser);
+router.post(controller.canRequest("create:user"), postHandler);
 
-export default route.handler(controller.errorHandlers);
+export default router.handler(controller.errorHandlers);
 
 async function postHandler(request, response) {
+  const userTryingToPost = request.context.user;
   const userInputValues = request.body;
   const createdUser = await user.create(userInputValues);
 
   const activationObject = await activation.create(createdUser.id);
   await activation.sendEmailToUser(createdUser, activationObject.id);
 
-  response.status(201).json(createdUser);
+  const secureOutputValues = authorization.filterOutput(
+    userTryingToPost,
+    "read:user",
+    createdUser,
+  );
+
+  response.status(201).json(secureOutputValues);
 }
