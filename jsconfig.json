@@ -1,1 +1,1 @@
-{ "compilerOptions": { "baseUrl": "." } }
+{ "compilerOptions": { "ignoreDeprecations": "6.0", "baseUrl": "." } }
