@@ -17,7 +17,8 @@
     "lint:eslint:check": "next lint --dir .",
     "lint:secretlint:check": "secretlint \"**/*\"",
     "migrations:create": "node-pg-migrate -m infra/migrations create",
-    "migrations:up": "node-pg-migrate -m infra/migrations up --envPath .env.development",
+    "migrations:up": "node-pg-migrate -m infra/migrations --no-reject-unauthorized --envPath .env.development up",
+    "migrations:up:dry": "node-pg-migrate -m infra/migrations --no-reject-unauthorized  --envPath .env.development --dry-run up",
     "commit": "cz",
     "prepare": "husky"
   },
