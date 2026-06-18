@@ -106,6 +106,7 @@ async function activateUserByUserId(userId) {
 }
 
 const activation = {
+  EXPIRATION_IN_MILLISECONDS,
   sendEmailToUser,
   create,
   findOneValidById,
