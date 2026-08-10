@@ -10,11 +10,13 @@ async function sendEmailToUser(userObject, token) {
   await email.send({
     to: userObject.email,
     subject: "Confirme seu cadastro pelo link de ativação",
-    text: `${userObject.username}
+    text: `Olá ${userObject.username}
+Ative sua conta para criar seus própios posts, interagir nos comentários, fazer parte de comunidades e mais!
 
+Basta clicar no link a baixo para concluir a ativação:
 ${webServer.origin}/cadastro/ativar/${token}
 
-Ative sua conta para poder interagir com a comunidade, criar seus própios posts, fazer parte de comunidades e mais!`,
+`,
   });
 }
 

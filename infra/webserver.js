@@ -4,7 +4,7 @@ function getOrigin() {
   }
 
   if (process.env.VERCEL_ENV === "preview") {
-    return `https://${process.env.VERSEL_URL}`;
+    return `https://${process.env.VERCEL_URL}`;
   }
 
   return "https://glorificat.com.br";
