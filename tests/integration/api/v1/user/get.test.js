@@ -16,7 +16,9 @@ describe("GET /api/v1/user", () => {
         username: "UserWithValidSession",
       });
 
-      const sessionObject = await orchestrator.createSession(createdUser.id);
+      const activatedUser = await orchestrator.activateUser(createdUser);
+
+      const sessionObject = await orchestrator.createSession(createdUser);
 
       const response = await fetch("http://localhost:3000/api/v1/user", {
         headers: { Cookie: `session_id=${sessionObject.token}` },
@@ -32,9 +34,9 @@ describe("GET /api/v1/user", () => {
         id: createdUser.id,
         username: "UserWithValidSession",
         email: createdUser.email,
-        password: createdUser.password,
+        features: ["create:session", "read:session", "update:user"],
         created_at: createdUser.created_at.toISOString(),
-        updated_at: createdUser.updated_at.toISOString(),
+        updated_at: activatedUser.updated_at.toISOString(),
       });
 
       expect(uuidVersion(responseBody.id)).toBe(4);
@@ -71,7 +73,10 @@ describe("GET /api/v1/user", () => {
       const createdUser = await orchestrator.createUser({
         username: "halfLifeSession",
       });
-      const sessionObject = await orchestrator.createSession(createdUser.id);
+
+      const activatedUser = await orchestrator.activateUser(createdUser);
+
+      const sessionObject = await orchestrator.createSession(createdUser);
       jest.useRealTimers();
 
       expect(sessionObject.created_at < new Date()).toEqual(true);
@@ -86,9 +91,9 @@ describe("GET /api/v1/user", () => {
         id: createdUser.id,
         username: "halfLifeSession",
         email: createdUser.email,
-        password: createdUser.password,
+        features: ["create:session", "read:session", "update:user"],
         created_at: createdUser.created_at.toISOString(),
-        updated_at: createdUser.updated_at.toISOString(),
+        updated_at: activatedUser.updated_at.toISOString(),
       });
 
       expect(uuidVersion(responseBody.id)).toBe(4);
@@ -168,7 +173,7 @@ describe("GET /api/v1/user", () => {
         username: "UserWithExpiredSession",
       });
 
-      const sessionObject = await orchestrator.createSession(createdUser.id);
+      const sessionObject = await orchestrator.createSession(createdUser);
 
       jest.useRealTimers();
 

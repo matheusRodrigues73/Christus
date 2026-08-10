@@ -8,14 +8,28 @@ beforeAll(async () => {
 describe("GET api/v1/migrations", () => {
   describe("Anonymous User", () => {
     test("Retriving pending migrations", async () => {
-      const pendingMigrations = await fetch(
-        "http:localhost:3000/api/v1/migrations",
-      );
-      expect(pendingMigrations.status).toBe(200);
+      const response = await fetch("http://localhost:3000/api/v1/migrations");
+      expect(response.status).toBe(403);
 
-      const pendingMigrationsBody = await pendingMigrations.json();
-      expect(Array.isArray(pendingMigrationsBody)).toBe(true);
-      expect(pendingMigrationsBody.length).toBeGreaterThan(0);
+      const responseBody = await response.json();
+
+      expect(responseBody).toEqual({
+        action: "Verifique se o seu usuário possui a feature!",
+        message: "Voce não possui permição para executar esta ação.",
+        name: "ForbiddenError",
+        status_code: 403,
+      });
+    });
+  });
+  describe("Privileged User", () => {
+    test("Retriving pending migrations", async () => {
+      const privilegedKey = process.env.PRIVILEGED_KEY;
+      const response = await fetch("http://localhost:3000/api/v1/migrations", {
+        headers: {
+          Cookie: `session_id=${privilegedKey}`,
+        },
+      });
+      expect(response.status).toBe(200);
     });
   });
 });

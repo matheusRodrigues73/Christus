@@ -24,7 +24,6 @@ async function findOneValidByToken(token) {
       `,
       values: [token],
     });
-
     if (result.rowCount === 0) {
       throw new UnauthorizedError({
         message: "Sessão de usuário invalida.",
@@ -107,6 +106,7 @@ async function expireById(sessionId) {
     return result.rows[0];
   }
 }
+
 const session = {
   create,
   renew,

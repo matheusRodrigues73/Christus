@@ -17,7 +17,8 @@
     "lint:eslint:check": "next lint --dir .",
     "lint:secretlint:check": "secretlint \"**/*\"",
     "migrations:create": "node-pg-migrate -m infra/migrations create",
-    "migrations:up": "node-pg-migrate -m infra/migrations up --envPath .env.development",
+    "migrations:up": "node-pg-migrate -m infra/migrations --envPath .env.development up",
+    "migrations:up:dry": "node-pg-migrate -m infra/migrations  --envPath .env.development --dry-run up",
     "commit": "cz",
     "prepare": "husky"
   },
@@ -65,5 +66,8 @@
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
     }
+  },
+  "engines": {
+    "node": "24"
   }
 }

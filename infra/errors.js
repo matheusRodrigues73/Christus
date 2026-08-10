@@ -72,6 +72,25 @@ export class UnauthorizedError extends Error {
   }
 }
 
+export class ForbiddenError extends Error {
+  constructor({ message, action, cause }) {
+    super(message || "Acesso negado!", { cause });
+    this.name = "ForbiddenError";
+    this.action =
+      action || "Verifique as features necessárias antes de continuar.";
+    this.statusCode = 403;
+  }
+
+  toJSON() {
+    return {
+      name: this.name,
+      message: this.message,
+      action: this.action,
+      status_code: this.statusCode,
+    };
+  }
+}
+
 export class NotAllowedMethodError extends Error {
   constructor() {
     super("O método é invalido nesse endpoint");
@@ -104,6 +123,26 @@ export class ServerError extends Error {
       message: this.message,
       action: this.action,
       status_code: this.statusCode,
+    };
+  }
+}
+
+export class ServiceError extends Error {
+  constructor({ cause, message, action, context }) {
+    super(message || "Service is offline", { cause });
+    this.name = "ServiceError";
+    this.action = action || "Check the connection with service";
+    this.statusCode = 503;
+    this.context = context;
+  }
+
+  toJSON() {
+    return {
+      name: this.name,
+      message: this.message,
+      action: this.action,
+      status_code: this.statusCode,
+      context: this.context,
     };
   }
 }
