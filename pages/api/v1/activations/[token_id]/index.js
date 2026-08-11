@@ -27,5 +27,5 @@ async function patchHandler(request, response) {
     usedActivationToken,
   );
 
-  response.status(200).json(secureOutputValues);
+  return response.status(200).json(secureOutputValues);
 }

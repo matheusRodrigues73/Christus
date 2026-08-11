@@ -38,7 +38,7 @@ async function postHandler(request, response) {
     newSession,
   );
 
-  response.status(201).json(secureOutputValues);
+  return response.status(201).json(secureOutputValues);
 }
 
 async function deleteHandler(request, response) {
@@ -56,5 +56,5 @@ async function deleteHandler(request, response) {
     expiredSessionObject,
   );
 
-  response.status(200).json(secureOutputValues);
+  return response.status(200).json(secureOutputValues);
 }

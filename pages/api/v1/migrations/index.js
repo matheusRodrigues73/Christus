@@ -20,7 +20,7 @@ async function getHandler(request, response) {
     pendingMigrations,
   );
 
-  response.status(200).json(secureOutputValues);
+  return response.status(200).json(secureOutputValues);
 }
 
 async function postHandler(request, response) {
@@ -36,5 +36,5 @@ async function postHandler(request, response) {
     return response.status(201).json(secureOutputValues);
   }
 
-  response.status(200).json(secureOutputValues);
+  return response.status(200).json(secureOutputValues);
 }

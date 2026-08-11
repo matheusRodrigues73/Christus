@@ -22,7 +22,7 @@ async function getHandler(request, response) {
     "read:user",
     userFound,
   );
-  response.status(200).json(secureOutputValues);
+  return response.status(200).json(secureOutputValues);
 }
 
 async function patchHandler(request, response) {
@@ -46,5 +46,5 @@ async function patchHandler(request, response) {
     "read:user",
     updatedUser,
   );
-  response.status(200).json(secureOutputValues);
+  return response.status(200).json(secureOutputValues);
 }
