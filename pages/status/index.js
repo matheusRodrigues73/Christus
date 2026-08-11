@@ -35,7 +35,6 @@ function Dependencies() {
   let maxConnectionsResponse = "Carregando...";
   let openedConnectionsResponse = "Carregando...";
   if (!isLoading && data) {
-    console.log(data);
     versionResponse = data.dependencies.database.version;
     maxConnectionsResponse = data.dependencies.database.max_connections;
     openedConnectionsResponse = data.dependencies.database.opened_connections;
