@@ -9,7 +9,7 @@ beforeAll(async () => {
 
 describe("GET api/v1/status", () => {
   describe("Anonymous User", () => {
-    test("Retriving current infra status", async () => {
+    test("Retrieving current infra status", async () => {
       const response = await fetch(`${webserver.origin}/api/v1/status`);
       expect(response.status).toBe(200);
 
@@ -32,7 +32,7 @@ describe("GET api/v1/status", () => {
     });
   });
   describe("Privileged User", () => {
-    test("Retriving current infra status", async () => {
+    test("Retrieving current infra status", async () => {
       const privilegedUser = await orchestrator.createUser();
       await orchestrator.activateUser(privilegedUser);
       const privilegedUserSessionObject =

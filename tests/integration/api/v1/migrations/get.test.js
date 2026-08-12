@@ -8,7 +8,7 @@ beforeAll(async () => {
 
 describe("GET api/v1/migrations", () => {
   describe("Anonymous User", () => {
-    test("Retriving pending migrations", async () => {
+    test("Retrieving pending migrations", async () => {
       const response = await fetch(`${webserver.origin}/api/v1/migrations`);
       expect(response.status).toBe(403);
 
@@ -23,7 +23,7 @@ describe("GET api/v1/migrations", () => {
     });
   });
   describe("Privileged User", () => {
-    test("Retriving pending migrations", async () => {
+    test("Retrieving pending migrations", async () => {
       const privilegedKey = process.env.PRIVILEGED_KEY;
       const response = await fetch(`${webserver.origin}/api/v1/migrations`, {
         headers: {

@@ -8,7 +8,7 @@ beforeAll(async () => {
 
 describe("POST api/v1/status", () => {
   describe("Anonymous User", () => {
-    test("Retriving current system status", async () => {
+    test("Retrieving current system status", async () => {
       const response = await fetch(`${webserver.origin}/api/v1/status`, {
         method: "POST",
       });
