@@ -54,7 +54,7 @@ describe("POST api/v1/migrations", () => {
       expect(incorrectPassword).toBe(false);
     });
 
-    test("With Duplicated Email", async () => {
+    test("With Duplicated `email`", async () => {
       const response1 = await fetch("http://localhost:3000/api/v1/users", {
         method: "POST",
         headers: {
@@ -90,7 +90,7 @@ describe("POST api/v1/migrations", () => {
       });
     });
 
-    test("With Duplicated Username", async () => {
+    test("With Duplicated `username`", async () => {
       const response1 = await fetch("http://localhost:3000/api/v1/users", {
         method: "POST",
         headers: {
@@ -126,7 +126,7 @@ describe("POST api/v1/migrations", () => {
       });
     });
 
-    test("With Undefined Password", async () => {
+    test("With Undefined `password`", async () => {
       const response = await fetch("http://localhost:3000/api/v1/users", {
         method: "POST",
         headers: {

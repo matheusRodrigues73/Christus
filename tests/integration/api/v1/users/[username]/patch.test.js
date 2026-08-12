@@ -10,7 +10,7 @@ beforeAll(async () => {
 
 describe("PATCH api/v1/users/[username]", () => {
   describe("Anonymous User", () => {
-    test("With Unique Username", async () => {
+    test("With Unique `username`", async () => {
       const createdUser = await orchestrator.createUser();
 
       const response = await fetch(
@@ -38,7 +38,7 @@ describe("PATCH api/v1/users/[username]", () => {
   });
 
   describe("Default User", () => {
-    test("With Nonexistent User", async () => {
+    test("With Nonexistent `user`", async () => {
       const createdUser = await orchestrator.createUser();
       const activatedUser = await orchestrator.activateUser(createdUser);
       const sessionObject = await orchestrator.createSession(activatedUser);
@@ -61,7 +61,7 @@ describe("PATCH api/v1/users/[username]", () => {
       });
     });
 
-    test("With Duplicated Username", async () => {
+    test("With Duplicated `username`", async () => {
       await orchestrator.createUser({
         username: "duplicatedUsername1",
       });
@@ -97,7 +97,7 @@ describe("PATCH api/v1/users/[username]", () => {
       });
     });
 
-    test("With Duplicated Email", async () => {
+    test("With Duplicated `email`", async () => {
       await orchestrator.createUser({
         email: "duplicatedEmail1@gmail.com",
       });
@@ -156,7 +156,7 @@ describe("PATCH api/v1/users/[username]", () => {
       expect(response.status).toBe(403);
     });
 
-    test("With Unique Username", async () => {
+    test("With Unique `username`", async () => {
       const createdUser = await orchestrator.createUser();
       const activatedUser = await orchestrator.activateUser(createdUser);
       const sessionObject = await orchestrator.createSession(activatedUser);
@@ -193,7 +193,7 @@ describe("PATCH api/v1/users/[username]", () => {
       expect(responseBody.updated_at > responseBody.created_at).toBe(true);
     });
 
-    test("With Unique Email", async () => {
+    test("With Unique `email`", async () => {
       const createdUser = await orchestrator.createUser();
       const activatedUser = await orchestrator.activateUser(createdUser);
       const sessionObject = await orchestrator.createSession(activatedUser);
@@ -232,7 +232,7 @@ describe("PATCH api/v1/users/[username]", () => {
       expect(responseBody.updated_at > responseBody.created_at).toBe(true);
     });
 
-    test("With New Password", async () => {
+    test("With New `password`", async () => {
       const createdUser = await orchestrator.createUser();
       const activatedUser = await orchestrator.activateUser(createdUser);
       const sessionObject = await orchestrator.createSession(activatedUser);
