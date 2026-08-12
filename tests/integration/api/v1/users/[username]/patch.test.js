@@ -195,7 +195,9 @@ describe("PATCH api/v1/users/[username]", () => {
     });
 
     test("With Unique `email`", async () => {
-      const createdUser = await orchestrator.createUser();
+      const createdUser = await orchestrator.createUser({
+        email: "randomEmail@gmail.com",
+      });
       const activatedUser = await orchestrator.activateUser(createdUser);
       const sessionObject = await orchestrator.createSession(activatedUser);
 
@@ -217,12 +219,14 @@ describe("PATCH api/v1/users/[username]", () => {
       const updatedUser = await orchestrator.getUserByUsername(
         createdUser.username,
       );
+      expect(updatedUser.email).toBe("uniqueEmail@gmail.com");
+
       const responseBody = await response.json();
       expect(responseBody).toEqual({
-        id: updatedUser.id,
-        username: updatedUser.username,
+        id: createdUser.id,
+        username: createdUser.username,
         features: ["create:session", "read:session", "update:user"],
-        created_at: updatedUser.created_at.toISOString(),
+        created_at: createdUser.created_at.toISOString(),
         updated_at: updatedUser.updated_at.toISOString(),
       });
 
