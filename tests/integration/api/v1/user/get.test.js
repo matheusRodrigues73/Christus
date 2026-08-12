@@ -2,6 +2,7 @@ import session from "models/session";
 import orchestrator from "tests/orchestrator.js";
 import setCookieParser from "set-cookie-parser";
 import { version as uuidVersion } from "uuid";
+import webserver from "infra/webserver";
 
 beforeAll(async () => {
   await orchestrator.waitForAllServices();
@@ -20,7 +21,7 @@ describe("GET /api/v1/user", () => {
 
       const sessionObject = await orchestrator.createSession(createdUser);
 
-      const response = await fetch("http://localhost:3000/api/v1/user", {
+      const response = await fetch(`${webserver.origin}/api/v1/user`, {
         headers: { Cookie: `session_id=${sessionObject.token}` },
       });
       expect(response.status).toBe(200);
@@ -81,7 +82,7 @@ describe("GET /api/v1/user", () => {
 
       expect(sessionObject.created_at < new Date()).toEqual(true);
 
-      const response = await fetch("http://localhost:3000/api/v1/user", {
+      const response = await fetch(`${webserver.origin}/api/v1/user`, {
         headers: { Cookie: `session_id=${sessionObject.token}` },
       });
       expect(response.status).toBe(200);
@@ -135,7 +136,7 @@ describe("GET /api/v1/user", () => {
     test("With unexistent session", async () => {
       const token =
         "4a8adaa0ef0edd6a6e65fd9b2c689723b48397934b88bc7550a0f414c0fdf871865a9e6af5f8159a9d272ad8fab1df88";
-      const response = await fetch("http://localhost:3000/api/v1/user", {
+      const response = await fetch(`${webserver.origin}/api/v1/user`, {
         headers: { Cookie: `session_id=${token}` },
       });
 
@@ -177,7 +178,7 @@ describe("GET /api/v1/user", () => {
 
       jest.useRealTimers();
 
-      const response = await fetch("http://localhost:3000/api/v1/user", {
+      const response = await fetch(`${webserver.origin}/api/v1/user`, {
         headers: { Cookie: `session_id=${sessionObject.token}` },
       });
       expect(response.status).toBe(401);

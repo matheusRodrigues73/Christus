@@ -2,6 +2,7 @@ import { faker } from "@faker-js/faker/.";
 import retry from "async-retry";
 import activation from "infra/activation";
 import database from "infra/database.js";
+import webserver from "infra/webserver";
 import migrator from "models/migrator";
 import session from "models/session";
 import user from "models/user";
@@ -18,7 +19,7 @@ async function waitForAllServices() {
     });
 
     async function fetchStatusPage() {
-      const response = await fetch("http://localhost:3000/api/v1/status");
+      const response = await fetch(`${webserver.origin}/api/v1/status`);
       if (response.status !== 200) {
         throw new Error();
       }

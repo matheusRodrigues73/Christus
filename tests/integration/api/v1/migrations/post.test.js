@@ -1,3 +1,4 @@
+import webserver from "infra/webserver";
 import orchestrator from "tests/orchestrator.js";
 
 beforeAll(async () => {
@@ -9,7 +10,7 @@ describe("POST api/v1/migrations", () => {
   describe("Anonymous User", () => {
     test("Run pending migrations", async () => {
       const migratedMigrations = await fetch(
-        "http://localhost:3000/api/v1/migrations",
+        `${webserver.origin}/api/v1/migrations`,
         {
           method: "POST",
         },
@@ -21,7 +22,7 @@ describe("POST api/v1/migrations", () => {
     test("Running at first time", async () => {
       const privilegedKey = process.env.PRIVILEGED_KEY;
       const migratedMigrations = await fetch(
-        "http://localhost:3000/api/v1/migrations",
+        `${webserver.origin}/api/v1/migrations`,
         {
           method: "POST",
           headers: {
@@ -39,7 +40,7 @@ describe("POST api/v1/migrations", () => {
     test("Running at second time", async () => {
       const privilegedKey = process.env.PRIVILEGED_KEY;
       const checkRolledMigrations = await fetch(
-        "http://localhost:3000/api/v1/migrations",
+        `${webserver.origin}/api/v1/migrations`,
         {
           method: "POST",
           headers: {
