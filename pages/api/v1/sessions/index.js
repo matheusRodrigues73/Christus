@@ -27,7 +27,7 @@ async function postHandler(request, response) {
   }
 
   const newSession = await session.create(authenticatedUser.id);
-  controller.setCookie(newSession.token, response);
+  controller.setSessionCookie(newSession.token, response);
 
   const secureOutputValues = authorization.filterOutput(
     authenticatedUser,
