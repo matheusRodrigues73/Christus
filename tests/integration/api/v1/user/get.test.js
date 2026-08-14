@@ -63,6 +63,7 @@ describe("GET /api/v1/user", () => {
         value: renewedSessionObject.token,
         maxAge: session.EXPIRATION_IN_MILLISECONDS / 1000,
         path: "/",
+        sameSite: "Lax",
         httpOnly: true,
       });
     });
@@ -129,6 +130,7 @@ describe("GET /api/v1/user", () => {
         value: renewedSessionObject.token,
         maxAge: session.EXPIRATION_IN_MILLISECONDS / 1000,
         path: "/",
+        sameSite: "Lax",
         httpOnly: true,
       });
     });
@@ -161,6 +163,7 @@ describe("GET /api/v1/user", () => {
         value: "invalid",
         maxAge: -1,
         path: "/",
+        sameSite: "Lax",
         httpOnly: true,
       });
     });
@@ -202,6 +205,7 @@ describe("GET /api/v1/user", () => {
         value: "invalid",
         maxAge: -1,
         path: "/",
+        sameSite: "Lax",
         httpOnly: true,
       });
     });
