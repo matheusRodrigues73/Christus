@@ -1,4 +1,4 @@
-import { faker } from "@faker-js/faker/.";
+import { faker } from "@faker-js/faker";
 import retry from "async-retry";
 import activation from "infra/activation";
 import database from "infra/database.js";
