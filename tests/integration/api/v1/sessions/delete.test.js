@@ -2,6 +2,7 @@ import orchestrator from "tests/orchestrator.js";
 import session from "models/session.js";
 import setCookieParser from "set-cookie-parser";
 import { version as uuidVersion } from "uuid";
+import webserver from "infra/webserver";
 
 beforeAll(async () => {
   await orchestrator.waitForAllServices();
@@ -14,7 +15,7 @@ describe("DELETE /api/v1/sessions", () => {
     test("With unexistent session", async () => {
       const token =
         "4a8adaa0ef0edd6a6e65fd9b2c689723b48397934b88bc7550a0f414c0fdf871865a9e6af5f8159a9d272ad8fab1df88";
-      const response = await fetch("http://localhost:3000/api/v1/sessions", {
+      const response = await fetch(`${webserver.origin}/api/v1/sessions`, {
         method: "DELETE",
         headers: { Cookie: `session_id=${token}` },
       });
@@ -43,7 +44,7 @@ describe("DELETE /api/v1/sessions", () => {
 
       jest.useRealTimers();
 
-      const response = await fetch("http://localhost:3000/api/v1/sessions", {
+      const response = await fetch(`${webserver.origin}/api/v1/sessions`, {
         method: "DELETE",
         headers: { Cookie: `session_id=${sessionObject.token}` },
       });
@@ -66,7 +67,7 @@ describe("DELETE /api/v1/sessions", () => {
 
       const sessionObject = await orchestrator.createSession(createdUser);
 
-      const response = await fetch("http://localhost:3000/api/v1/sessions", {
+      const response = await fetch(`${webserver.origin}/api/v1/sessions`, {
         method: "DELETE",
         headers: { Cookie: `session_id=${sessionObject.token}` },
       });
@@ -101,6 +102,7 @@ describe("DELETE /api/v1/sessions", () => {
         value: "invalid",
         maxAge: -1,
         path: "/",
+        sameSite: "Lax",
         httpOnly: true,
       });
     });

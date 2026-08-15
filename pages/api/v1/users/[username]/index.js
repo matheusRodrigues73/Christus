@@ -4,13 +4,11 @@ import user from "models/user.js";
 import authorization from "models/authorization";
 import { ForbiddenError } from "infra/errors";
 
-const route = createRouter();
-
-route.use(controller.injectAnonymousOrUser);
-route.get(getHandler);
-route.patch(controller.canRequest("update:user"), patchHandler);
-
-export default route.handler(controller.errorHandlers);
+export default createRouter()
+  .use(controller.injectAnonymousOrUser)
+  .get(getHandler)
+  .patch(controller.canRequest("update:user"), patchHandler)
+  .handler(controller.errorHandlers);
 
 async function getHandler(request, response) {
   const userTryingToGet = request.context.user;
@@ -22,7 +20,7 @@ async function getHandler(request, response) {
     "read:user",
     userFound,
   );
-  response.status(200).json(secureOutputValues);
+  return response.status(200).json(secureOutputValues);
 }
 
 async function patchHandler(request, response) {
@@ -46,5 +44,5 @@ async function patchHandler(request, response) {
     "read:user",
     updatedUser,
   );
-  response.status(200).json(secureOutputValues);
+  return response.status(200).json(secureOutputValues);
 }

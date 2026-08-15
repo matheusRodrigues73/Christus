@@ -74,7 +74,7 @@ describe("models/authorization", () => {
 
     test("With valid `user`, `feature` and `resource`", () => {
       const createdUser = {
-        features: ["create:user"],
+        features: ["read:user"],
       };
 
       const resource = {
@@ -83,8 +83,8 @@ describe("models/authorization", () => {
         email: "resource@resource.com",
         password: ".",
         features: ["read:user"],
-        created_at: "2026-0101T00:00:00.000Z",
-        updated_at: "2026-0101T00:00:00.000Z",
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
       };
 
       expect(
@@ -93,8 +93,8 @@ describe("models/authorization", () => {
         id: 1,
         username: "test",
         features: ["read:user"],
-        created_at: "2026-0101T00:00:00.000Z",
-        updated_at: "2026-0101T00:00:00.000Z",
+        created_at: resource.created_at,
+        updated_at: resource.updated_at,
       });
     });
   });

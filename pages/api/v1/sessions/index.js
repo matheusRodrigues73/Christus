@@ -6,18 +6,15 @@ import { createRouter } from "next-connect";
 
 import { ForbiddenError } from "infra/errors.js";
 
-const router = createRouter();
-
-router.use(controller.injectAnonymousOrUser);
-router.post(controller.canRequest("create:session"), postHandler);
-router.delete(deleteHandler);
-
-export default router.handler(controller.errorHandlers);
+export default createRouter()
+  .use(controller.injectAnonymousOrUser)
+  .post(controller.canRequest("create:session"), postHandler)
+  .delete(deleteHandler)
+  .handler(controller.errorHandlers);
 
 async function postHandler(request, response) {
   const userInputValues = request.body;
-
-  const authenticatedUser = await authentication.authenticateUser(
+  const authenticatedUser = await authentication.getUser(
     userInputValues.email,
     userInputValues.password,
   );
@@ -30,7 +27,7 @@ async function postHandler(request, response) {
   }
 
   const newSession = await session.create(authenticatedUser.id);
-  controller.setCookie(newSession.token, response);
+  controller.setSessionCookie(newSession.token, response);
 
   const secureOutputValues = authorization.filterOutput(
     authenticatedUser,
@@ -38,7 +35,7 @@ async function postHandler(request, response) {
     newSession,
   );
 
-  response.status(201).json(secureOutputValues);
+  return response.status(201).json(secureOutputValues);
 }
 
 async function deleteHandler(request, response) {
@@ -56,5 +53,5 @@ async function deleteHandler(request, response) {
     expiredSessionObject,
   );
 
-  response.status(200).json(secureOutputValues);
+  return response.status(200).json(secureOutputValues);
 }

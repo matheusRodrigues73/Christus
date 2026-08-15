@@ -3,13 +3,11 @@ import controller from "infra/controller.js";
 import migrator from "models/migrator.js";
 import authorization from "models/authorization";
 
-const router = createRouter();
-
-router.use(controller.injectAnonymousOrUser);
-router.get(controller.canRequest("read:migrations"), getHandler);
-router.post(controller.canRequest("run:migrations"), postHandler);
-
-export default router.handler(controller.errorHandlers);
+export default createRouter()
+  .use(controller.injectAnonymousOrUser)
+  .get(controller.canRequest("read:migrations"), getHandler)
+  .post(controller.canRequest("run:migrations"), postHandler)
+  .handler(controller.errorHandlers);
 
 async function getHandler(request, response) {
   const userTryingToGet = request.context.user;
@@ -20,7 +18,7 @@ async function getHandler(request, response) {
     pendingMigrations,
   );
 
-  response.status(200).json(secureOutputValues);
+  return response.status(200).json(secureOutputValues);
 }
 
 async function postHandler(request, response) {
@@ -36,5 +34,5 @@ async function postHandler(request, response) {
     return response.status(201).json(secureOutputValues);
   }
 
-  response.status(200).json(secureOutputValues);
+  return response.status(200).json(secureOutputValues);
 }

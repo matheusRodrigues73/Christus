@@ -17,7 +17,7 @@ async function getDatabaseStatus() {
   const versionResp = await database.query("SHOW server_version;");
   const version = versionResp.rows[0].server_version;
 
-  const maxConnectionsResp = await database.query("SHOW max_connections");
+  const maxConnectionsResp = await database.query("SHOW max_connections;");
   const maxConnections = parseInt(maxConnectionsResp.rows[0].max_connections);
 
   const databaseName = process.env.POSTGRES_DB;

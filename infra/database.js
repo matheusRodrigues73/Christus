@@ -8,9 +8,10 @@ async function query(objectQuery) {
     const res = await client.query(objectQuery);
     return res;
   } catch (error) {
-    const serverError = new ServerError(
-      "Erro na conexão com Banco ou na Query",
-    );
+    const serverError = new ServerError({
+      message: "Erro na conexão com Banco ou na Query",
+      cause: error,
+    });
     throw serverError;
   } finally {
     await client?.end();

@@ -99,6 +99,7 @@ async function expireById(sessionId) {
         id = $1
       RETURNING
         *
+      ;
       `,
       values: [sessionId],
     });

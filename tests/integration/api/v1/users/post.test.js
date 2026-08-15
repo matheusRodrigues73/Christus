@@ -2,6 +2,7 @@ import orchestrator from "tests/orchestrator.js";
 import { version as uuidVersion } from "uuid";
 import user from "models/user.js";
 import password from "models/password.js";
+import webserver from "infra/webserver";
 
 beforeAll(async () => {
   await orchestrator.waitForAllServices();
@@ -12,7 +13,7 @@ beforeAll(async () => {
 describe("POST api/v1/migrations", () => {
   describe("Anonymous User", () => {
     test("With Unique and Valid Values", async () => {
-      const response = await fetch("http://localhost:3000/api/v1/users", {
+      const response = await fetch(`${webserver.origin}/api/v1/users`, {
         method: "POST",
         headers: {
           "content-type": "application/json",
@@ -54,8 +55,8 @@ describe("POST api/v1/migrations", () => {
       expect(incorrectPassword).toBe(false);
     });
 
-    test("With Duplicated Email", async () => {
-      const response1 = await fetch("http://localhost:3000/api/v1/users", {
+    test("With Duplicated `email`", async () => {
+      const response1 = await fetch(`${webserver.origin}/api/v1/users`, {
         method: "POST",
         headers: {
           "content-type": "application/json",
@@ -68,7 +69,7 @@ describe("POST api/v1/migrations", () => {
       });
       expect(response1.status).toBe(201);
 
-      const response2 = await fetch("http://localhost:3000/api/v1/users", {
+      const response2 = await fetch(`${webserver.origin}/api/v1/users`, {
         method: "POST",
         headers: {
           "content-type": "application/json",
@@ -90,8 +91,8 @@ describe("POST api/v1/migrations", () => {
       });
     });
 
-    test("With Duplicated Username", async () => {
-      const response1 = await fetch("http://localhost:3000/api/v1/users", {
+    test("With Duplicated `username`", async () => {
+      const response1 = await fetch(`${webserver.origin}/api/v1/users`, {
         method: "POST",
         headers: {
           "content-type": "application/json",
@@ -104,7 +105,7 @@ describe("POST api/v1/migrations", () => {
       });
       expect(response1.status).toBe(201);
 
-      const response2 = await fetch("http://localhost:3000/api/v1/users", {
+      const response2 = await fetch(`${webserver.origin}/api/v1/users`, {
         method: "POST",
         headers: {
           "content-type": "application/json",
@@ -126,8 +127,8 @@ describe("POST api/v1/migrations", () => {
       });
     });
 
-    test("With Undefined Password", async () => {
-      const response = await fetch("http://localhost:3000/api/v1/users", {
+    test("With Undefined `password`", async () => {
+      const response = await fetch(`${webserver.origin}/api/v1/users`, {
         method: "POST",
         headers: {
           "content-type": "application/json",

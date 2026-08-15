@@ -31,7 +31,7 @@ function Dependencies() {
   const { isLoading, data } = useSWR("/api/v1/status", fetchAPI, {
     refreshInterval: 2000,
   });
-  let versionResponse = "Carregando...";
+  let versionResponse = "";
   let maxConnectionsResponse = "Carregando...";
   let openedConnectionsResponse = "Carregando...";
   if (!isLoading && data) {
@@ -44,7 +44,7 @@ function Dependencies() {
       <h2>dependencias:</h2>
       <h3>Banco de dados:</h3>
       <ul>
-        <li>Verção atual: {versionResponse}</li>
+        {versionResponse ? <li>Verção atual: {versionResponse}</li> : null}
         <li>Maxímo de conexões suportadas: {maxConnectionsResponse}</li>
         <li>Conexões ativas: {openedConnectionsResponse}</li>
       </ul>
