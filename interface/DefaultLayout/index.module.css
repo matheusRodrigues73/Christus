@@ -1,0 +1,13 @@
+.smallContent {
+  max-width: 23rem;
+  margin-inline: auto;
+}
+
+.largeVerticalContent {
+  height: 70vh;
+  padding: 3% 0;
+}
+
+.smallVerticalFooter {
+  height: 10vh;
+}

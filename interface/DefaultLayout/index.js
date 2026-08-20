@@ -1,7 +1,30 @@
 import Head from "next/head";
 import { PageLayout, Header, Text } from "@primer/react";
+import styles from "./index.module.css";
 
-export default function DefaultLayout({ children, metadata = {} }) {
+const contentWidthClasses = {
+  small: styles.smallContent,
+};
+const contentHeightClasses = {
+  large: styles.largeVerticalContent,
+};
+const footerHeightClasses = {
+  small: styles.smallVerticalFooter,
+};
+
+export default function DefaultLayout({
+  children,
+  metadata = {},
+  contentWidth,
+  contentFullScreen,
+}) {
+  let extraContentClassName = contentWidthClasses[contentWidth];
+  let extraFooterClassName;
+  if (contentFullScreen) {
+    extraContentClassName += ` ${contentHeightClasses.large}`;
+    extraFooterClassName = footerHeightClasses.small;
+  }
+
   return (
     <>
       <Head>
@@ -26,8 +49,13 @@ export default function DefaultLayout({ children, metadata = {} }) {
         </Header.Item>
       </Header>
       <PageLayout>
-        <PageLayout.Content>{children}</PageLayout.Content>
-        <PageLayout.Footer divider="line">
+        <PageLayout.Content
+          width={contentWidth}
+          className={extraContentClassName}
+        >
+          {children}
+        </PageLayout.Content>
+        <PageLayout.Footer divider="line" className={extraFooterClassName}>
           <Text size="small">₢ {new Date().getFullYear()} Glorificat</Text>
         </PageLayout.Footer>
       </PageLayout>
