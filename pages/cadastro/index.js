@@ -36,6 +36,7 @@ function RegisterForm() {
       body: JSON.stringify(newUser),
     });
     if (response.status === 201) {
+      // eslint-disable-next-line @next/next/no-location-assign-relative-destination
       location.href = "/cadastro/confirmar";
     }
   }
