@@ -34,15 +34,14 @@ function UpdatedAt() {
   const { isLoading, data } = useSWR("/api/v1/status", fetchAPI, {
     refreshInterval: 2000,
   });
-  let updatedAtResponse;
+  let updatedAtResponse = "Carregando...";
   if (!isLoading && data) {
     updatedAtResponse = new Date(data.updated_at).toLocaleString("pt-BR");
   }
   return (
     <LabelLoading
       variant="secondary"
-      labelText="Última atualização:"
-      loadingValue={updatedAtResponse}
+      content={"Última atualização: " + updatedAtResponse}
     />
   );
 }
@@ -66,39 +65,29 @@ function Dependencies() {
         <LabelLoading
           variant="success"
           text="Verção atual:"
-          loadingValue={versionResponse}
+          content={versionResponse}
         />
       )}
       <LabelLoading
         variant="success"
         text="Conexões disponíveis:"
-        loadingValue={maxConnectionsResponse}
+        content={maxConnectionsResponse}
       />
       <LabelLoading
         variant="success"
         text="Conexões ativas:"
-        loadingValue={openedConnectionsResponse}
+        content={openedConnectionsResponse}
       />
     </Stack>
   );
 }
 
-function LabelLoading({
-  variant = "",
-  text = "",
-  labelText = "",
-  loadingValue = "",
-}) {
+function LabelLoading({ variant = "", text = "", content = "" }) {
   function labelComponent() {
-    return loadingValue ? (
-      <Label variant={variant}>
-        {labelText && labelText + " "}
-        {loadingValue}
-      </Label>
+    return content ? (
+      <Label variant={variant}>{content}</Label>
     ) : (
-      <Label variant="secondary">
-        {labelText && labelText + " "}Carregando...
-      </Label>
+      <Label variant="secondary">Carregando...</Label>
     );
   }
   return (
