@@ -7,24 +7,6 @@ import useSWR from "swr";
 export default function ActivationPage() {
   const router = useRouter();
   const tokenId = router.query.token_id;
-  const { isLoading, data } = useSWR(
-    `api/v1/activations/${tokenId}`,
-    async (key) => await fetch(key),
-  );
-  let activationResponse;
-  if (!isLoading) {
-    console.log(data.status);
-    if (data.status === 200) {
-      activationResponse =
-        "Conta ativada com sucesso! Agora você pode realizar o login para ter acesso à novas funcionalidades!";
-    } else if (data.status === 404) {
-      activationResponse =
-        "Este link de ativação não esta válido! peça para reenviar o email de ativação com um novo link!";
-    } else {
-      activationResponse =
-        "Sua conta não pôde ser ativada! Entre em contato com o suporte!";
-    }
-  }
 
   return (
     <DefaultLayout
@@ -34,7 +16,31 @@ export default function ActivationPage() {
       }}
     >
       <Heading>Ativação de conta</Heading>
-      {isLoading ? <SkeletonText /> : <Text>{activationResponse}</Text>}
+      <ActivationResponse token_id={tokenId} />
     </DefaultLayout>
   );
+}
+
+function ActivationResponse({ token_id = "" }) {
+  const { isLoading, data } = useSWR(
+    `/api/v1/activations/${token_id}`,
+    async (key) => await fetch(key, { method: "PATCH" }),
+  );
+
+  let activationResponse;
+  if (!isLoading) {
+    if (data.status === 200) {
+      activationResponse =
+        "Conta ativada com sucesso! Agora você pode realizar o login para ter acesso à novas funcionalidades!";
+    } else if (data.status === 404) {
+      activationResponse = "Ops... Este link de ativação não é válido!";
+    } else if (data.status === 405) {
+      activationResponse = "Ação invalidada pelo sistema!";
+    } else {
+      activationResponse =
+        "Algo deu errado! tente novamente ou contate o suporte.";
+    }
+  }
+
+  return isLoading ? <SkeletonText /> : <Text>{activationResponse}</Text>;
 }
