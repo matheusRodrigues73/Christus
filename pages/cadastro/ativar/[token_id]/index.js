@@ -15,7 +15,7 @@ export default function ActivationPage() {
         description: "Ative o cadastro para entrar em uma sessão",
       }}
     >
-      <Heading>Ativação de conta</Heading>
+      <Heading as="h1">Ativação de conta</Heading>
       <ActivationResponse token_id={tokenId} />
     </DefaultLayout>
   );
