@@ -7,7 +7,6 @@ import prettier from "eslint-config-prettier/flat";
 import json from "@eslint/json";
 import markdown from "@eslint/markdown";
 import css from "@eslint/css";
-import { tailwind3 } from "tailwind-csstree";
 
 export default defineConfig([
   {
@@ -51,7 +50,6 @@ export default defineConfig([
     files: ["**/*.css"],
     plugins: { css },
     language: "css/css",
-    languageOptions: { customSyntax: tailwind3 },
     extends: ["css/recommended"],
   },
 ]);
